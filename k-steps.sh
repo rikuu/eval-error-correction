@@ -1,41 +1,30 @@
 #!/bin/bash
+#
+# Runs experiments for comparing results for different sets of values for k
+# in the iteration steps of LoRDEC+LoRMA
+#
+# Input:
+# 1. Long reads
+# 2. Reference genome
 
-dir=~/lorma
-lordec_dir=~/lorma/lordec/LoRDEC-0.4.1-strict
-lorma_dir=~/lorma/lorma/LoRMA-0.2/build
-trimsplit=$lordec_dir/lordec-trim-split
-lorma=$lorma_dir/LoRMA
-time=/usr/bin/time
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+SCRIPTS=$DIR/scripts
+MASTER=$SCRIPTS/master.sh
+ANALYZE=$SCRIPTS/analyze.sh
 
-for i in 82 103 124; do
-  mkdir tmp-$i
+OUTPUT=$DIR/experiments/k-steps
 
-  bash $dir/monitor-disk.sh tmp &
-  disk_pid=$!
-
-  bash $dir/monitor-stats.sh 5 &
-  stats_pid=$!
-
-  cd tmp-$i
-  $time -v $trimsplit -i ../reads-k$i.fasta -o trim.fasta &> trim-$i.log
-  $time -v $lorma -threads 6 -reads trim.fasta -graph trim.fasta -output lorma-$i.fasta -discarded discarded.fasta &> correct-$i.log
-  rm trim.fasta discarded.fasta
-
-  kill $disk_pid
-  kill $stats_pid
-
-  cd ..
+# Run
+for i in 5 7 10 15 20; do
+  mkdir -p $OUTPUT/$i
+  cd $OUTPUT/$i
+  $MASTER lorma - $i $1
 done
 
-echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
-refsize=$(du ~/lorma/ecoli/ecoli.fasta | cut -f1)
-
-for i in 82 103 124; do
-  blasr tmp-$i/lorma-$i.fasta ~/lorma/ecoli/NC_000913.fasta -sam -nproc 12 -noSplitSubreads -clipping soft -out pacbio.sam -unaligned pacbio.unaligned -bestn 1 &> blasr.log
-  sam=$(python $HOME/lorma/sam-analysis.py tmp-$i/lorma-$i.fasta pacbio.sam ~/lorma/ecoli/NC_000913.fasta)
-  rm pacbio.sam pacbio.unaligned blasr.log
-
-  size=$(du tmp-$i/lorma-$i.fasta | cut -f1)
-  size=$(python -c "print $size/$refsize.")
-  echo -e "$size\t$sam" #\t$stats"
+# Analyze
+echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
+"CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
+for i in 5 7 10 15 20; do
+  cd $OUTPUT/$i
+  $ANALYZE tmp/final.fasta $1 $2 stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 done

@@ -8,30 +8,34 @@
 # 2. Reference genome
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
-MASTER=$DIR/master.sh
-ANALYZE=$DIR/analyze.sh
+SCRIPTS=$DIR/scripts
+MASTER=$SCRIPTS/master.sh
+ANALYZE=$SCRIPTS/analyze.sh
+
+OUTPUT=$DIR/experiments/coverage
 
 # Run
 for i in 25 50 75 100 150 175; do
-  mkdir -p $DIR/experiments/coverage/lorma/$i
-  cd $DIR/experiments/coverage/lorma/$i
+  mkdir -p $OUTPUT/lorma/$i
+  cd $OUTPUT/lorma/$i
   $MASTER lorma $1/subset_"$i"x.fasta
 
-  mkdir -p $DIR/experiments/coverage/pbcr/$i
-  cd $DIR/experiments/coverage/pbcr/$i
+  mkdir -p $OUTPUT/pbcr/$i
+  cd $OUTPUT/pbcr/$i
   $MASTER pbcr $1/subset_"$i"x.fastq
 done
 
 # Analyze
-echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
-echo -e "LoRDEC+LoRMA"
+echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
+"CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
+echo -e "LoRDEC+LoRMA" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
-  cd $DIR/experiments/coverage/lorma/$i
-  $ANALYZE tmp/final.fasta $1/subset-$i.fasta $2 stats.log disk.log time.log
+  cd $OUTPUT/lorma/$i
+  $ANALYZE tmp/final.fasta $1/subset-$i.fasta $2 stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 done
 
-echo -e "PBcR"
+echo -e "PBcR" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
-  cd $DIR/experiments/coverage/pbcr/$i
-  $ANALYZE tmp/k12.fasta $1/subset-$i.fasta $2 stats.log disk.log time.log
+  cd $OUTPUT/pbcr/$i
+  $ANALYZE tmp/k12.fasta $1/subset-$i.fasta $2 stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 done
