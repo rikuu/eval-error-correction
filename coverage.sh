@@ -13,18 +13,17 @@ ANALYZE=$DIR/analyze.sh
 
 # Run
 for i in 25 50 75 100 150 175; do
-  mkdir $DIR/experiments/coverage/lorma/$i
+  mkdir -p $DIR/experiments/coverage/lorma/$i
   cd $DIR/experiments/coverage/lorma/$i
-  $MASTER lorma $1/subset-$i.fasta
+  $MASTER lorma $1/subset_"$i"x.fasta
 
-  mkdir $DIR/experiments/coverage/pbcr/$i
+  mkdir -p $DIR/experiments/coverage/pbcr/$i
   cd $DIR/experiments/coverage/pbcr/$i
-  $MASTER pbcr $1/subset-$i.fastq
+  $MASTER pbcr $1/subset_"$i"x.fastq
 done
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
-
 echo -e "LoRDEC+LoRMA"
 for i in 25 50 75 100 150 175; do
   cd $DIR/experiments/coverage/lorma/$i
