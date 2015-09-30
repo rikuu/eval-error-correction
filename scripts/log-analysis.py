@@ -1,14 +1,26 @@
 #!/usr/bin/python
+#
+# Analyses the generated log files
+#
+# Input:
+# 1. The stats.log files separated by commas
+# 2. The disk.log files
+# 3. The time.log files
+#
 
-import os
-import sys
+import os, sys
+
+if len(sys.argv) < 4:
+  print 'Usage: '+sys.argv[0]+' <stats.log[s]> <disk.log[s]> <time.log[s]>'+\
+    '\nWhere multiple log files are separated by commas.'
+  exit(1)
 
 # Find the maximum memory and swap usages from a log file
 def stats(stats):
   max_cpu = 0
   max_mem = 0
   max_swap = 0
-  
+
   with open(stats, 'r') as f:
     for line in f:
       data = line.split(' ')
@@ -21,7 +33,7 @@ def stats(stats):
       # Format memory and swap usage into GB
       mem = int(data[-2]) / 1000. / 1000.
       swap = int(data[-1]) / 1000. / 1000.
-  
+
       max_mem = max(max_mem, mem)
       max_cpu = max(max_cpu, cpu)
       max_swap = max(max_swap, swap)
@@ -76,11 +88,6 @@ def time(times):
 
   return prettyPrintTime(elapsed), prettyPrintTime(cpu)
 
-if len(sys.argv) < 4:
-  print 'Usage: '+sys.argv[0]+' <stats.log[s]> <disk.log[s]> <time.log[s]>'+\
-    '\nWhere multiple log files are separated by commas.'
-  exit(1)
-
 max_mem = 0
 max_swap = 0
 for log in sys.argv[1].split(','):
@@ -92,4 +99,3 @@ max_disk = disk(sys.argv[2])
 elapsed, cpu = time(sys.argv[3])
 
 print elapsed+'\t'+cpu+'\t'+str(max_mem)+' GB\t'+str(max_disk)+' GB\t'+str(max_swap)+' GB'
-

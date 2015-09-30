@@ -6,6 +6,7 @@
 # Input:
 # 1. Long reads
 # 2. Reference genome
+#
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR/scripts
@@ -13,6 +14,9 @@ MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
 OUTPUT=$DIR/experiments/k-steps
+
+STEPS=""
+ENDS=""
 
 # Run
 for i in ; do

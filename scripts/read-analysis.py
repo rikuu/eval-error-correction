@@ -1,6 +1,22 @@
-import sys
-import gzip
+#!/usr/bin/python
+#
+# Analyzes the long and short reads
+#
+# Input:
+# 1. A FASTA file of the reads
+# 2. A FASTA file of the refence genome
+#
 
+import sys, gzip
+
+if len(sys.argv) < 3:
+  print 'Usage: ' + sys.argv[0] + ' <reads> <reference>'
+  exit(1)
+
+readsFile = sys.argv[1]
+referenceFile = sys.argv[2]
+
+# This is a definititely over-engineered implementation
 class Counter:
   def __init__(self):
     self.n_count = 0
@@ -36,6 +52,7 @@ class Counter:
 
     return self.base_count, self.max_base, self.n_count, self.sequence_count
 
+# Prints 
 def print_ratio_stat(stat, a, b):
   try:
     print stat + ': ' + str(float(a) / float(b)) + \
@@ -46,13 +63,6 @@ def print_ratio_stat(stat, a, b):
 def count_stats(file):
   counter = Counter()
   return counter.read(file)
-
-if len(sys.argv) < 3:
-  print 'Usage: ' + sys.argv[0] + ' <reads> <reference>'
-  exit(1)
-
-readsFile = sys.argv[1]
-referenceFile = sys.argv[2]
 
 reference_base_count, reference_max_base, reference_n_count, reference_sequence_count = count_stats(referenceFile)
 reads_base_count, reads_max_base, reads_n_count, reads_sequence_count = count_stats(readsFile)

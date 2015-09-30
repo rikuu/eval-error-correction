@@ -19,7 +19,7 @@ STATS_PID=$!
 cd tmp
 
 if [ "$1" = "lorma" ]; then
-  $TIME -v $SCRIPTS/lorma2.sh "${@:2}" 2> ../time.log
+  $TIME -v $SCRIPTS/lorma.sh "${@:2}" 2> ../time.log
 fi
 
 if [ "$1" = "proovread" ]; then

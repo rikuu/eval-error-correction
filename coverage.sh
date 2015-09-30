@@ -6,6 +6,7 @@
 # Input:
 # 1. Location of read subsets
 # 2. Reference genome
+#
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR/scripts
