@@ -7,27 +7,28 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR/scripts
 
 source $DIR/tools.conf
+
 mkdir tmp
 
 bash $SCRIPTS/monitor-disk.sh tmp &
-disk_pid=$!
+DISK_PID=$!
 
 bash $SCRIPTS/monitor-stats.sh 5 &
-stats_pid=$!
+STATS_PID=$!
 
 cd tmp
 
-if [ $1 = "lorma" ]; then
-  $TIME -v $dir/lorma2.sh "${@:2}" 2> ../time.log
+if [ "$1" = "lorma" ]; then
+  $TIME -v $SCRIPTS/lorma2.sh "${@:2}" 2> ../time.log
 fi
 
-if [ $1 = "proovread" ]; then
+if [ "$1" = "proovread" ]; then
   # Splits long reads into 20M sized chunks
-  $seqchunker -s 20M -o pb-%03d.fq $2
+  $SEQCHUNKER -s 20M -o pb-%03d.fq "$2"
 
   # Corrects each chunk separately
-  for file in $(ls pb-*.fq); do
-    $PROOVREAD --threads 8 -l $file --coverage $4 -s $3 --pre ${file%.fq}
+  for FILE in $(ls pb-*.fq); do
+    $PROOVREAD --threads 8 -l $FILE --coverage "$4" -s "$3" --pre "${FILE%.fq}"
   done
 
   # Parallelize proovread on process-level
@@ -39,16 +40,16 @@ if [ $1 = "proovread" ]; then
   rm -r pb*
 fi
 
-if [ $1 = "pbcr" ]; then
-  $TIME -v $pbcr -l k12 -s $dir/selfSampleData/pacbio.spec -fastq $2 $3 2> ../time.log
+if [ "$1" = "pbcr" ]; then
+  $TIME -v $PBCR -l k12 -s $DIR/selfSampleData/pacbio.spec -fastq "$2" "$3" 2> ../time.log
 fi
 
-if [ $1 = "lordec" ]; then
-  $TIME -v $lordec -s 3 -k 19 -i $2 -2 $3 -o lordec.fasta 2> ../correct-time.log
-  $TIME -v $trimsplit -i lordec.fasta -o lordec-trimmed.fasta 2> ../trim-time.log
+if [ "$1" = "lordec" ]; then
+  $TIME -v $LORDEC -s 3 -k 19 -i "$2" -2 "$3" -o lordec.fasta 2> ../correct-time.log
+  $TIME -v $TRIMSPLIT -i lordec.fasta -o lordec-trimmed.fasta 2> ../trim-time.log
 fi
 
-kill $disk_pid
-kill $stats_pid
+kill $DISK_PID
+kill $STATS_PID
 
 cd ..
