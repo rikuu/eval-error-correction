@@ -6,7 +6,8 @@
 # 1. Frequency of monitoring in seconds
 #
 
-source $DIR/tools.conf
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+source $DIR/configuration.sh
 
 while [ "true" ]; do
   cpu=$(top -bn1 | grep load | awk '{printf "%.2f\n", $(NF-2)}')

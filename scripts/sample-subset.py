@@ -1,75 +1,10 @@
 #!/usr/bin/python
+#
+# Creates the random subsets of the reads
+#
 
 import sys
 from random import randint
-
-def random_sequence(file, sequence_count):
-  sequence_i = randint(0, sequence_count)
-  with open(file, 'r') as f:
-    sequence = ''
-    length = 0
-
-    i = -1
-    for line in f:
-      if line[0] == '>':
-        i += 1
-        if i > sequence_i:
-          return sequence, length
-
-      if i == sequence_i:
-        sequence += line
-
-        if line[0] != '>':
-          length += len(line) - 1
-
-def count_stats(file):
-  n_count = 0
-  base_count = 0
-  max_base = 0
-  sequence_count = 0
-
-  with open(file, 'r') as f:
-    sequence_length = 0
-
-    for line in f:
-      if line[0] == '>':
-        sequence_count += 1
-        base_count += sequence_length
-
-        if sequence_length > max_base:
-          max_base = sequence_length
-
-        sequence_length = 0
-      else:
-        sequence_length += len(line) - 1
-
-        for m in line:
-          if m in ['N', 'n']:
-            n_count += 1
-
-    base_count += sequence_length
-
-  return base_count, max_base, n_count, sequence_count
-
-def sample_subset(readsFile, coverage):
-  reference_base_count, reference_max_base, reference_n_count, reference_sequence_count = count_stats(referenceFile)
-  reads_base_count, reads_max_base, reads_n_count, reads_sequence_count = count_stats(readsFile)
-
-  with open('subset_'+str(coverage)+'x.fasta', 'w') as f:
-    length = 0
-    c = 0
-    while c < coverage:
-      sequence, l = random_sequence(readsFile, reads_sequence_count)
-      length += l
-      c = length / reference_base_count
-
-      print str((c / coverage) * 100) + '% ( ' + str(c) + ' / ' + str(coverage) + ' )'
-
-      f.write(sequence)
-
-#readsFile = sys.argv[1]
-#referenceFile = sys.argv[2]
-#coverage = sys.argv[3]
 
 def extract_reads(file):
   with open(file, 'r') as f:
@@ -86,8 +21,6 @@ def extract_reads(file):
           i = 0
           j += 1
       sequence += line
-
-#extract_reads(sys.argv[1])
 
 def sample(coverage):
   reads = []
@@ -112,7 +45,7 @@ def sample(coverage):
             i = -1
           i += 1
 
+reads = sys.argv[1]
+extract_reads(reads)
 for c in range(0, 200, 25):
   sample(c)
-
-#print count_stats(sys.argv[1])

@@ -4,7 +4,7 @@
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
-source $DIR/../tools.conf
+source $DIR/../configuration.sh
 
 usage() {
   echo "Usage: $0 [-s] [-start <19> -end <61> -step <21> -threads <6> -friends <7>] *.fasta" 1>&2
@@ -93,7 +93,7 @@ K=$START_K
 while [ $K -le $END_K ]; do
   READS=reads-k"$K".fasta
 
-  $TIME -v $LORDEC -c -s 4 -k $K -i $LAST -2 $LAST -o $READS 2> lordec-$K.log
+  $TIME -v $LORDEC -c -s 4 -k $K -i $LAST -2 $LAST -o $READS 2> lordec-"$K".log
 
   if [ $SAVE -eq 0 ] && [ $LAST != $FILE ]; then
     rm $LAST

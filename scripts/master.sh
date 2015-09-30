@@ -6,7 +6,7 @@
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR/scripts
 
-source $DIR/tools.conf
+source $DIR/../configuration.sh
 
 mkdir tmp
 
