@@ -13,7 +13,7 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 OUTPUT_DIR=$DIR/experiments
 
 TOOLS=$DIR/tools
-LORMA=$TOOLS/LoRMA-0.2/bin/LoRMA
+LORMA=$TOOLS/LoRMA-0.2/build/LoRMA
 
 # GNU time
 TIME=/usr/bin/time
