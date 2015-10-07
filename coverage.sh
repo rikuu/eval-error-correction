@@ -9,11 +9,13 @@
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+source $DIR/configuration.sh
+
 SCRIPTS=$DIR/scripts
 MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
-OUTPUT=$DIR/experiments/coverage
+OUTPUT=$OUTPUT_DIR/coverage
 
 # Run
 for i in 25 50 75 100 150 175; do
@@ -29,6 +31,7 @@ done
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 "CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
+
 echo -e "LoRDEC+LoRMA" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/lorma/$i

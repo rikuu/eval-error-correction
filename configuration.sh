@@ -9,10 +9,12 @@
 # This is the location of the scripts
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 
-# Change this to point to where ever you want the results stored
+# Change this to point to where you want the results are run
 OUTPUT_DIR=$DIR/experiments
 
 TOOLS=$DIR/tools
+
+# http://cs.helsinki.fi/u/lmsalmel/
 LORMA=$TOOLS/LoRMA-0.2/build/LoRMA
 
 # GNU time

@@ -2,35 +2,73 @@
 #
 # Runs experiments for comparing results for different error correction tools
 #
-# Input:
-# 1. Long reads
-# 2. Reference genome
+
+#
+# TODO:
+# - Move duplication to simple loops
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+source $DIR/configuration.sh
+
 SCRIPTS=$DIR/scripts
 MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
-OUTPUT=$DIR/experiments/tools
+OUTPUT=$OUTPUT_DIR/tools
+
+# Define datasets
+ECOLI_REF=$DIR/reads/ecoli-ref.fastq
+ECOLI_LR=$DIR/reads/ecoli-lr.fastq
+ECOLI_SR=$DIR/reads/ecoli-sr.fastq
+
+YEAST_REF=$DIR/reads/yeast-ref.fastq
+YEAST_LR=$DIR/reads/yeast-lr.fastq
+YEAST_SR=$DIR/reads/yeast-sr.fastq
+
+# Helper functions
+run(TOOL, DATASET, LONGREADS, SHORTREADS) {
+  mkdir -p $OUTPUT/$TOOL/$DATASET
+  cd $OUTPUT/$TOOL/$DATASET
+  $MASTER $TOOL $LONGREADS $SHORTREADS
+}
+
+analyze(TOOL, DATASET, LONGREADS, REFERENCE) {
+  cd $OUTPUT/$TOOL/$DATASET
+  $ANALYZE corrected.fasta $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+}
 
 # Run
-for DATASET in "ecoli" "yeast"; do
-  for TOOL in "lordec" "proovread" "pbcr" "pbcr"; do
-    mkdir -p $OUTPUT/$TOOL/$DATASET
-    cd $OUTPUT/$TOOL/$DATASET
-    $MASTER $TOOL "$1"
-  done
-done
+run("lorma", "ecoli", $ECOLI_LR)
+run("pbcr-self", "ecoli", $ECOLI_LR)
+run("lordec", "ecoli", $ECOLI_LR, $ECOLI_SR)
+run("proovread", "ecoli", $ECOLI_LR, $ECOLI_SR)
+run("pbcr-illumina", "ecoli", $ECOLI_LR, $ECOLI_SR)
+
+run("lorma", "yeast", $YEAST_LR)
+run("pbcr-self", "yeast", $YEAST_LR)
+run("lordec", "yeast", $YEAST_LR, $YEAST_SR)
+run("proovread", "yeast", $YEAST_LR, $YEAST_SR)
+run("pbcr-illumina", "yeast", $YEAST_LR, $YEAST_SR)
 
 # Analyze
+
+
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 "CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
-for DATASET in "ecoli" "yeast"; do
-  echo -e $DATASET | tee -a $OUTPUT/analysis.log
 
-  for TOOL in "lordec" "proovread" "pbcr" "pbcr"; do
-    cd $OUTPUT/$TOOL/$DATASET
-    $ANALYZE tmp/final.fasta "$1" "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
-  done
-done
+echo -e "ecoli" | tee -a $OUTPUT/analysis.log
+
+analyze("lorma", "ecoli", $ECOLI_LR, $ECOLI_REF)
+analyze("pbcr-self", "ecoli", $ECOLI_LR, $ECOLI_REF)
+analyze("lordec", "ecoli", $ECOLI_LR, $ECOLI_REF)
+analyze("proovread", "ecoli", $ECOLI_LR, $ECOLI_REF)
+analyze("pbcr-illumina", "ecoli", $ECOLI_LR, $ECOLI_REF)
+
+echo -e "yeast" | tee -a $OUTPUT/analysis.log
+
+analyze("lorma", "yeast", $YEAST_LR, $YEAST_REF)
+analyze("pbcr-self", "yeast", $YEAST_LR, $YEAST_REF)
+analyze("lordec", "yeast", $YEAST_LR, $YEAST_REF)
+analyze("proovread", "yeast", $YEAST_LR, $YEAST_REF)
+analyze("pbcr-illumina", "yeast", $YEAST_LR, $YEAST_REF)

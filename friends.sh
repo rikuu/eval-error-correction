@@ -9,11 +9,13 @@
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+source $DIR/configuration.sh
+
 SCRIPTS=$DIR/scripts
 MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
-OUTPUT=$DIR/experiments/friends
+OUTPUT=$OUTPUT_DIR/friends
 
 # Run
 for i in 5 7 10 15 20; do

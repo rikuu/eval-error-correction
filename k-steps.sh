@@ -8,12 +8,19 @@
 # 2. Reference genome
 #
 
+#
+# TODO:
+# - Create k iteration loops
+#
+
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
+source $DIR/configuration.sh
+
 SCRIPTS=$DIR/scripts
 MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
-OUTPUT=$DIR/experiments/k-steps
+OUTPUT=$OUTPUT_DIR/k-steps
 
 STEPS=""
 ENDS=""

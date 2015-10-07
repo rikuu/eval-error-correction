@@ -3,6 +3,11 @@
 # Runs error correction tools
 #
 
+#
+# TODO:
+#  - Move corrected sequence to "corrected.fasta"
+#
+
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR
 
