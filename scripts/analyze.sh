@@ -8,7 +8,7 @@
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
-SCRIPTS=$DIR/scripts/
+SCRIPTS=$DIR
 
 source $DIR/../configuration.sh
 
