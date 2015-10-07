@@ -7,7 +7,7 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/../configuration.sh
 
 usage() {
-  echo "Usage: $0 [-s] [-start <19> -end <61> -step <21> -threads <6> -friends <7>] *.fasta" 1>&2
+  echo "Usage: $0 [-s] [-start <19> -end <61> -step <21> -threads <6> -friends <7> -k <19>] *.fasta" 1>&2
   exit 1
 }
 
@@ -18,6 +18,7 @@ K_STEP=21
 
 FRIENDS=7
 THREADS=6
+LORMA_K=19
 
 SAVE=0
 FILE=''
@@ -61,6 +62,13 @@ while true; do
       case "$1" in
         *[!0-9]* | "") ;;
         *) FRIENDS="$1"; shift ;;
+      esac ;;
+
+    -k)
+      shift
+      case "$1" in
+        *[!0-9]* | "") ;;
+        *) LORMA_K="$1"; shift ;;
       esac ;;
 
     -*)
@@ -111,7 +119,7 @@ if [ $SAVE = 0 ]; then
   rm $READS
 fi
 
-$LORMA -friends $FRIENDS -threads $THREADS -reads trim.fasta -graph trim.fasta -output final.fasta -discarded discarded.fasta
+$LORMA -friends $FRIENDS -threads $THREADS -reads trim.fasta -graph trim.fasta -output final.fasta -discarded discarded.fasta -k $LORMA_K
 
 if [ $SAVE = 0 ]; then
  rm trim.fasta
