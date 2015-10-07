@@ -71,7 +71,7 @@ print_ratio_stat('Coverage', reads_base_count, reference_base_count)
 
 print 'Reads: ' + str(reads_sequence_count)
 print 'Max read: ' + str(reads_max_base)
-print_ratio_stat('Avr read', reads_base_count, reads_sequence_count)
+print_ratio_stat('Avg read', reads_base_count, reads_sequence_count)
 
 print_ratio_stat('Reads N rate', reads_n_count, reads_base_count)
 print_ratio_stat('Reference N rate', reference_n_count, reference_base_count)
