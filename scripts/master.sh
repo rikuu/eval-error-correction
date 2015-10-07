@@ -4,7 +4,7 @@
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
-SCRIPTS=$DIR/scripts
+SCRIPTS=$DIR
 
 source $DIR/../configuration.sh
 
@@ -41,7 +41,7 @@ if [ "$1" = "proovread" ]; then
 fi
 
 if [ "$1" = "pbcr" ]; then
-  $TIME -v $PBCR -l k12 -s $DIR/selfSampleData/pacbio.spec -fastq "$2" "$3" 2> ../time.log
+  $TIME -v $PBCR -l k12 -s $SCRIPTS/pbcr.spec -fastq "$2" "$3" 2> ../time.log
 fi
 
 if [ "$1" = "lordec" ]; then

@@ -7,7 +7,7 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/../configuration.sh
 
 usage() {
-  echo "Usage: $0 [-s] [-start <19> -end <61> -step <21> -threads <6> -friends <7> -k <19>] *.fasta" 1>&2
+  echo "Usage: $0 [-s] [-n] [-start <19> -end <61> -step <21> -threads <6> -friends <7> -k <19>] *.fasta" 1>&2
   exit 1
 }
 
@@ -20,6 +20,7 @@ FRIENDS=7
 THREADS=6
 LORMA_K=19
 
+SKIP=0
 SAVE=0
 FILE=''
 
@@ -28,6 +29,10 @@ while true; do
     -s)
       shift
       SAVE=1 ;;
+
+    -n)
+      shift
+      SKIP=1 ;;
 
     -start)
       shift
@@ -97,31 +102,30 @@ fi
 READS=$FILE
 LAST=$READS
 
-K=$START_K
-while [ $K -le $END_K ]; do
-  READS=reads-k"$K".fasta
+if [ $SKIP -eq 0 ]; then
+  K=$START_K
+  while [ $K -le $END_K ]; do
+    READS=reads-k"$K".fasta
 
-  $TIME -v $LORDEC -c -s 4 -k $K -i $LAST -2 $LAST -o $READS 2> lordec-"$K".log
+    $TIME -v $LORDEC -c -s 4 -k $K -i $LAST -2 $LAST -o $READS 2> lordec-"$K".log
 
-  if [ $SAVE -eq 0 ] && [ $LAST != $FILE ]; then
-    rm $LAST
-    rm *.h5
-  fi
+    if [ $SAVE -eq 0 ] && [ $LAST != $FILE ]; then
+      rm $LAST *.h5
+    fi
 
-  LAST=$READS
-
-  K=$(($K+$K_STEP))
-done
-
-$TRIMSPLIT -i $READS -o trim.fasta
-
-if [ $SAVE = 0 ]; then
-  rm $READS
+    LAST=$READS
+    K=$(($K+$K_STEP))
+  done
 fi
 
-$LORMA -friends $FRIENDS -threads $THREADS -reads trim.fasta -graph trim.fasta -output final.fasta -discarded discarded.fasta -k $LORMA_K
+# $TRIMSPLIT -i $READS -o trim.fasta
+# if [ $SAVE = 0 ]; then
+#   rm $READS
+# fi
+# READS=trim.fasta
+
+$LORMA -k $LORMA_K -friends $FRIENDS -threads $THREADS -reads $READS -graph $READS -output final.fasta -discarded discarded.fasta
 
 if [ $SAVE = 0 ]; then
- rm trim.fasta
- rm discarded.fasta
+ rm trim.fasta discarded.fasta
 fi
