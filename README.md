@@ -2,8 +2,8 @@
 
 ## Installing
 
-Install all the tools (There are links provided in *configuration.sh*).
-Make sure *configuration.sh* points to the binaries.
+1. Install all the tools (There are links provided in *configuration.sh*).
+2. Make sure *configuration.sh* points to the binaries.
 
 ## Running
 

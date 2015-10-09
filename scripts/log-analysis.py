@@ -3,9 +3,7 @@
 # Analyses the generated log files
 #
 # Input:
-# 1. The stats.log files separated by commas
-# 2. The disk.log files
-# 3. The time.log files
+# 1.-3. The log files separated by commas
 #
 
 import os, sys

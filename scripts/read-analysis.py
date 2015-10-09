@@ -4,7 +4,7 @@
 #
 # Input:
 # 1. A FASTA file of the reads
-# 2. A FASTA file of the refence genome
+# 2. A FASTA file of the reference genome
 #
 
 import sys, gzip
@@ -52,7 +52,6 @@ class Counter:
 
     return self.base_count, self.max_base, self.n_count, self.sequence_count
 
-# Prints 
 def print_ratio_stat(stat, a, b):
   try:
     print stat + ': ' + str(float(a) / float(b)) + \

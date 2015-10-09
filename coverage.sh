@@ -4,13 +4,8 @@
 # using LoRDEC+LoRMA and PBcR.
 #
 # Input:
-# 1. Location of read subsets
+# 1. a FASTQ file of the reads
 # 2. Reference genome
-#
-
-#
-# TODO:
-# - generate subsets automatically
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
@@ -22,15 +17,20 @@ ANALYZE=$SCRIPTS/analyze.sh
 
 OUTPUT=$OUTPUT_DIR/coverage
 
+# Generate random subsets
+mkdir -p $OUTPUT
+cd $OUTPUT
+$SCRIPTS/sample-subset.py "$1"
+
 # Run
 for i in 25 50 75 100 150 175; do
   mkdir -p $OUTPUT/lorma/$i
   cd $OUTPUT/lorma/$i
-  $MASTER lorma "$1"/subset_"$i"x.fasta
+  $MASTER lorma $OUTPUT/subset_"$i"x.fasta
 
   mkdir -p $OUTPUT/pbcr/$i
   cd $OUTPUT/pbcr/$i
-  $MASTER pbcr "$1"/subset_"$i"x.fastq
+  $MASTER pbcr $OUTPUT/subset_"$i"x.fastq
 done
 
 # Analyze
@@ -40,11 +40,11 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 echo -e "LoRDEC+LoRMA" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/lorma/$i
-  $ANALYZE corrected.fasta "$1"/subset_"$i"x.fasta "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 done
 
 echo -e "PBcR" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/pbcr/$i
-  $ANALYZE corrected.fasta "$1"/subset_"$i"x.fasta "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 done
