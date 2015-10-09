@@ -3,7 +3,7 @@
 # Sets locations for all the required tools.
 #
 # NOTE: This file is executed when any of the tools are required, so don't put
-# anything evil, destructive scripting here
+# any evil, destructive scripting here
 #
 
 # This is the location of the scripts
@@ -17,9 +17,6 @@ TOOLS=$DIR/tools
 
 # http://cs.helsinki.fi/u/lmsalmel/
 LORMA=$TOOLS/LoRMA-0.2/build/LoRMA
-
-# GNU time
-TIME=/usr/bin/time
 
 # https://github.com/BioInf-Wuerzburg/proovread
 PROOVREAD_DIR=$TOOLS/proovread/bin
@@ -37,4 +34,8 @@ TRIMSPLIT=$LORDEC_DIR/lordec-trim-split
 # https://www.selenic.com/smem/
 SMEM=$TOOLS/smem-1.4/smem
 
+# https://github.com/PacificBiosciences/blasr/
 BLASR=$TOOLS/blasr/blasr
+
+# GNU time
+TIME=/usr/bin/time
