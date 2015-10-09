@@ -13,14 +13,12 @@
 import sys
 from random import randint
 
-import read-analysis
-
-if len(sys.argv) < 1:
-    print 'Usage: ' + sys.argv[0] + ' <fastq file>\n'
+if len(sys.argv) < 2:
+    print 'Usage: ' + sys.argv[0] + ' <reads> <reference>\n'
     exit(1)
 
 reads = sys.argv[1]
-reference = sys.argv[1]
+reference = sys.argv[2]
 
 # Extracts sets of 100 reads
 # While this makes the subset be not quite random, it speeds up the sampling
