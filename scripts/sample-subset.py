@@ -45,7 +45,7 @@ def extract_reads(file):
 def sample(coverage, readsets, avg_set_coverage):
   reads = []
 
-  sets_to_pick = int(coverage * avg_set_coverage)
+  sets_to_pick = int(coverage / avg_set_coverage)
 
   # randomly pick sets of reads and write them to a file
   with open('subset_'+str(coverage)+'x.fastq', 'w') as f:
@@ -70,27 +70,19 @@ def sample(coverage, readsets, avg_set_coverage):
 
 # Counts the number of bases in a sequence file
 def count_bases(file, format='fasta'):
-  base_count = 0
   sequence_length = 0
 
   with open(file, 'r') as f:
     i = 0
     for line in f:
       if format == 'fasta':
-        if line[0] == '>':
-          base_count += sequence_length
-          sequence_length = 0
-        else:
+        if line[0] != '>':
           sequence_length += len(line) - 1
       elif format == 'fastq':
-        if i == 0:
-          base_count += sequence_length
-          sequence_length = 0
-        elif i == 1:
+        if i == 1:
           sequence_length += len(line) - 1
         i = (i + 1) % 4
-    base_count += sequence_length
-  return base_count
+  return sequence_length
 
 reference_length = count_bases(reference, 'fasta')
 reads_length = count_bases(reads, 'fastq')
@@ -100,5 +92,5 @@ readsets = extract_reads(reads)
 avg_set_coverage = (float(reads_length) / float(readsets)) / float(reference_length)
 
 # Create subsets with coverages [25, 50, 75, 100, 150, 175]
-for c in range(0, 200, 25):
+for c in range(25, 200, 25):
   sample(c, readsets, avg_set_coverage)

@@ -20,7 +20,7 @@ OUTPUT=$OUTPUT_DIR/coverage
 # Generate random subsets
 mkdir -p $OUTPUT
 cd $OUTPUT
-$SCRIPTS/sample-subset.py "$1"
+python $SCRIPTS/sample-subset.py "$1"
 rm tmp.*.fastq
 
 # Run
