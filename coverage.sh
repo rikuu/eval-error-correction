@@ -21,6 +21,7 @@ OUTPUT=$OUTPUT_DIR/coverage
 mkdir -p $OUTPUT
 cd $OUTPUT
 $SCRIPTS/sample-subset.py "$1"
+rm tmp.*.fastq
 
 # Run
 for i in 25 50 75 100 150 175; do
