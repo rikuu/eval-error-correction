@@ -50,7 +50,7 @@ def sample(coverage, readsets, avg_set_coverage):
   # randomly pick sets of reads and write them to a file
   with open('subset_'+str(coverage)+'x.fastq', 'w') as f:
     while len(reads) < sets_to_pick:
-      read = "tmp.%05d.fastq" % randint(0, readsets)
+      read = "tmp.%05d.fastq" % randint(0, readsets-1)
       if read not in reads:
         with open(read, 'r') as r:
           f.write(r.read())
