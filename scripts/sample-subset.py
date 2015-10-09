@@ -82,6 +82,7 @@ def count_bases(file, format='fasta'):
         if i == 1:
           sequence_length += len(line) - 1
         i = (i + 1) % 4
+
   return sequence_length
 
 reference_length = count_bases(reference, 'fasta')

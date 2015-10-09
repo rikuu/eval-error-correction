@@ -7,6 +7,11 @@
 # 2. A FASTA file of the reference genome
 #
 
+#
+# TODO:
+# - This is all broken.
+#
+
 import sys, gzip
 
 if len(sys.argv) < 3:
@@ -32,7 +37,7 @@ class Counter:
       self.max_base = max(self.sequence_length, self.max_base)
       self.sequence_length = 0
     else:
-      self.sequence_length += len(line) - 1
+      self.sequence_length += len(line.rstrip())
 
       for m in line:
         if m in ['N', 'n']:
@@ -43,12 +48,13 @@ class Counter:
       with gzip.open(file, 'rb') as f:
         for line in f:
           self.parse_line(line)
-          self.base_count += self.sequence_length
     else:
       with open(file, 'r') as f:
         for line in f:
           self.parse_line(line)
-          self.base_count += self.sequence_length
+
+    self.base_count += self.sequence_length
+    self.max_base = max(self.sequence_length, self.max_base)
 
     return self.base_count, self.max_base, self.n_count, self.sequence_count
 
@@ -69,8 +75,8 @@ reads_base_count, reads_max_base, reads_n_count, reads_sequence_count = count_st
 print_ratio_stat('Coverage', reads_base_count, reference_base_count)
 
 print 'Reads: ' + str(reads_sequence_count)
-print 'Max read: ' + str(reads_max_base)
-print_ratio_stat('Avg read', reads_base_count, reads_sequence_count)
+print 'Max. read: ' + str(reads_max_base)
+print_ratio_stat('Avg. read', reads_base_count, reads_sequence_count)
 
 print_ratio_stat('Reads N rate', reads_n_count, reads_base_count)
 print_ratio_stat('Reference N rate', reference_n_count, reference_base_count)
