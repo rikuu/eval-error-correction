@@ -51,7 +51,7 @@ fi
 if [ "$1" = "pbcr" ]; then
   $TIME -v $PBCR -l k12 -s $SCRIPTS/pbcr.spec -fastq "$2" "$3" 2> ../time.log
 
-  mv k12/k12.fasta ../corrected.fasta
+  mv k12.fasta ../corrected.fasta
 fi
 
 if [ "$1" = "lordec" ]; then
