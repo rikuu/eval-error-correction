@@ -7,7 +7,9 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/../configuration.sh
 
 usage() {
-  echo "Usage: $0 [-s] [-n] [-start <19> -end <61> -step <21> -threads <6> -friends <7> -k <19>] *.fasta" 1>&2
+  echo -e "Usage: $0 [-s] [-n] [-start <19> -end <61> -step <21> -threads <6> -friends <7> -k <19>] *.fasta" 1>&2
+  echo -e "\t-s saves the sequence data of intermediate LoRDEC steps" 1>&2
+  echo -e "\t-n skips LoRDEC steps" 1>&2
   exit 1
 }
 
@@ -118,11 +120,13 @@ if [ $SKIP -eq 0 ]; then
   done
 fi
 
-# $TRIMSPLIT -i $READS -o trim.fasta
-# if [ $SAVE = 0 ]; then
-#   rm $READS
-# fi
-# READS=trim.fasta
+$TRIMSPLIT -i $READS -o trim.fasta
+
+if [ $SAVE = 0 ]; then
+  rm $READS
+fi
+
+READS=trim.fasta
 
 $LORMA -k $LORMA_K -friends $FRIENDS -threads $THREADS -reads $READS -graph $READS -output final.fasta -discarded discarded.fasta
 

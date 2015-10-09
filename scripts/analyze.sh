@@ -7,6 +7,11 @@
 # 2. The generated log files from the scripts
 #
 
+#
+# TODO:
+# - optionally output data header
+#
+
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR
 

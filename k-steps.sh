@@ -22,24 +22,53 @@ ANALYZE=$SCRIPTS/analyze.sh
 
 OUTPUT=$OUTPUT_DIR/k-steps
 
-STEPS=""
-ENDS=""
+# Helper
+run(STEP, END) {
+  mkdir -p $OUTPUT/$STEP/$END
+  cd $OUTPUT/$STEP/$END
+  $MASTER lorma -start 19 -end $END -step $STEP "$1"
+}
+
+analyze(STEP, END) {
+  cd $OUTPUT/$STEP/$END
+  $ANALYZE corrected.fasta "$1" "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+}
 
 # Run
-for i in ; do
-  for j in ; do
-    mkdir -p $OUTPUT/$i
-    cd $OUTPUT/$i
-    $MASTER lorma -start 19 -end $i -step $j "$1"
-  done
-done
+run(0, 19)
+
+run(3, 31)
+run(3, 46)
+run(3, 61)
+
+run(7, 33)
+run(7, 47)
+run(7, 61)
+
+run(14, 33)
+run(14, 47)
+run(14, 61)
+
+run(21, 40)
+run(21, 61)
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 "CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
-for i in ; do
-  for j in ; do
-    cd $OUTPUT/$i
-    $ANALYZE tmp/final.fasta "$1" "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
-  done
-done
+
+analyze(0, 19)
+
+analyze(3, 31)
+analyze(3, 46)
+analyze(3, 61)
+
+analyze(7, 33)
+analyze(7, 47)
+analyze(7, 61)
+
+analyze(14, 33)
+analyze(14, 47)
+analyze(14, 61)
+
+analyze(21, 40)
+analyze(21, 61)

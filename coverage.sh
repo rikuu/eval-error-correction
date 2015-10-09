@@ -8,6 +8,11 @@
 # 2. Reference genome
 #
 
+#
+# TODO:
+# - generate subsets automatically
+#
+
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/configuration.sh
 

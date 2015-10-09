@@ -52,8 +52,6 @@ run("proovread", "yeast", $YEAST_LR, $YEAST_SR)
 run("pbcr-illumina", "yeast", $YEAST_LR, $YEAST_SR)
 
 # Analyze
-
-
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 "CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
 
