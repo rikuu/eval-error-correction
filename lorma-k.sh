@@ -15,7 +15,7 @@ SCRIPTS=$DIR/scripts
 MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
-OUTPUT=$OUTPUT_DIR/friends
+OUTPUT=$OUTPUT_DIR/lorma-k
 
 # Run
 for i in 19 40 61; do
