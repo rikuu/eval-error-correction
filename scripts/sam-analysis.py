@@ -136,7 +136,6 @@ with open(samfile) as f:
             covArray[i] += 1
 
 expectedCoverage = str(1.0 - expCoverage)
-#print 'Expected coverage: ' + str(1.0-expCoverage) + '\n'
 
 genomeLen=0
 coveredLen=0
@@ -155,11 +154,6 @@ observedCoverage = str(float(coveredLen) / float(genomeLen))
 errorRate = str(float(errors)/float(alignedRegionGenome))
 
 print aligned + '\t' + errorRate + '\t' + identity + '\t' + expectedCoverage + '\t' + observedCoverage
-
-# print 'Size of aligned regions / Length of reads: ' + str(alignedRegionRead) + '/' + str(totalReadLength) + ' (' + str(float(alignedRegionRead)/float(totalReadLength)) + ')\n'
-# print 'Error rate of aligned regions: ' + str(errors) + '/' + str(alignedRegionGenome) + ' (' + str(float(errors)/float(alignedRegionGenome)) + ')\n'
-# print 'Identity of aligned regions: ' + str(matchingBases) + '/' + str(alignedRegionGenome) + ' (' + str(float(matchingBases)/float(alignedRegionGenome)) + ')\n'
-# print 'Coverage of genome: ' + str(coveredLen) + '/' + str(genomeLen) + ' (' + str(float(coveredLen)/float(genomeLen)) + ')\n'
 
 if uncoveredfile != None:
     f = open(uncoveredfile, 'w')

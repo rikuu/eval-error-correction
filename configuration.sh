@@ -12,6 +12,7 @@ DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 # Change this to point to where you want the results are run
 OUTPUT_DIR=$DIR/experiments
 
+# This is just a helper and is not used outside this file
 TOOLS=$DIR/tools
 
 # http://cs.helsinki.fi/u/lmsalmel/

@@ -3,9 +3,9 @@
 # Creates the random subsets of the reads
 #
 # Input:
-# 1. Fastq file of the reads
+# 1. a FASTQ file of the reads
 #
-# Fastq is used instead of fasta, since some tools require a fastq format
+# FASTQ is used instead of fasta, since some tools require a FASTQ format
 # and it's easier to strip the quality data than to generate it.
 #
 
