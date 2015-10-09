@@ -27,13 +27,23 @@ YEAST_LR=$DIR/reads/yeast-lr.fastq
 YEAST_SR=$DIR/reads/yeast-sr.fastq
 
 # Helper functions
-run(TOOL, DATASET, LONGREADS, SHORTREADS) {
+run() {
+  TOOL=$1
+  DATASET=$2
+  LONGREADS=$3
+  SHORTREADS=$4
+
   mkdir -p $OUTPUT/$TOOL/$DATASET
   cd $OUTPUT/$TOOL/$DATASET
   $MASTER $TOOL $LONGREADS $SHORTREADS
 }
 
-analyze(TOOL, DATASET, LONGREADS, REFERENCE) {
+analyze() {
+  TOOL=$1
+  DATASET=$2
+  LONGREADS=$3
+  REFERENCE=$4
+
   cd $OUTPUT/$TOOL/$DATASET
   $ANALYZE corrected.fasta $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 }

@@ -23,13 +23,19 @@ ANALYZE=$SCRIPTS/analyze.sh
 OUTPUT=$OUTPUT_DIR/k-steps
 
 # Helper
-run(STEP, END) {
+run() {
+  STEP=$1
+  END=$2
+
   mkdir -p $OUTPUT/$STEP/$END
   cd $OUTPUT/$STEP/$END
   $MASTER lorma -start 19 -end $END -step $STEP "$1"
 }
 
-analyze(STEP, END) {
+analyze() {
+  STEP=$1
+  END=$2
+
   cd $OUTPUT/$STEP/$END
   $ANALYZE corrected.fasta "$1" "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 }
