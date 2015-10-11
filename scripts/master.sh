@@ -6,7 +6,7 @@
 if [[ "$#" -lt 2 ]]; then
   echo "Usage: $0 <lorma|proovread|pbcr|lordec> [lorma parameters] <long reads> [short reads]" 1>&2
   exit 1
-}
+fi
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR
