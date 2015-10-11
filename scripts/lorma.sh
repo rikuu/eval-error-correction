@@ -109,7 +109,7 @@ if [ $SKIP -eq 0 ]; then
   while [ $K -le $END_K ]; do
     READS=reads-k"$K".fasta
 
-    $TIME -v $LORDEC -c -s 4 -k $K -i $LAST -2 $LAST -o $READS 2> lordec-"$K".log
+    $TIME -v $LORDEC -c -s 4 -k $K -i $LAST -2 $LAST -o $READS 2> lordec-"$K"-stderr.log 1> lordec-"$K"-stdout.log
 
     if [ $SAVE -eq 0 ] && [ $LAST != $FILE ]; then
       rm $LAST *.h5

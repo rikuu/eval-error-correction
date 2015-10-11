@@ -24,7 +24,7 @@ STATS_PID=$!
 cd tmp
 
 if [ "$1" = "lorma" ]; then
-  $TIME -v $SCRIPTS/lorma.sh "${@:2}" 2> ../time.log
+  $TIME -v $SCRIPTS/lorma.sh "${@:2}" 2> ../stderr.log 1> ../stdout.log
 
   mv final.fasta ../corrected.fasta
 fi
@@ -49,14 +49,14 @@ if [ "$1" = "proovread" ]; then
 fi
 
 if [ "$1" = "pbcr" ]; then
-  $TIME -v $PBCR -l k12 -s $SCRIPTS/pbcr.spec -fastq "$2" "$3" 2> ../time.log
+  $TIME -v $PBCR -l k12 -s $SCRIPTS/pbcr.spec -fastq "$2" "$3" 2> ../stderr.log 1> ../stdout.log
 
   mv k12.fasta ../corrected.fasta
 fi
 
 if [ "$1" = "lordec" ]; then
-  $TIME -v $LORDEC -s 3 -k 19 -i "$2" -2 "$3" -o lordec.fasta 2> ../correct-time.log
-  $TIME -v $TRIMSPLIT -i lordec.fasta -o lordec-trimmed.fasta 2> ../trim-time.log
+  $TIME -v $LORDEC -s 3 -k 19 -i "$2" -2 "$3" -o lordec.fasta 2> ../correct-stderr.log 1> ../correct-stdout.log
+  $TIME -v $TRIMSPLIT -i lordec.fasta -o lordec-trimmed.fasta 2> ../trim-stderr.log 1> ../trim-stdout.log
 
   mv lordec.fasta ../corrected.fasta
   mv lordec-trimmed.fasta ../corrected-trimmed.fasta
