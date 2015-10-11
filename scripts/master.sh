@@ -35,7 +35,7 @@ if [ "$1" = "proovread" ]; then
 
   # Corrects each chunk separately
   for FILE in $(ls pb-*.fq); do
-    $PROOVREAD --threads 8 -l $FILE --coverage "$4" -s "$3" --pre "${FILE%.fq}"
+    $PROOVREAD --threads 8 -l $FILE -s "$3" --pre "${FILE%.fq}"
   done
 
   # Parallelize proovread on process-level
