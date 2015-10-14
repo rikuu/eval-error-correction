@@ -27,7 +27,7 @@ def count_stats(filename, format='fasta', gzipped=False):
   file = open(filename, 'r') if not gzipped else gzip.open(filename, 'rb')
 
   i = 0
-  for line in f:
+  for line in file:
     if format == 'fasta':
       if line[0] == '>':
         sequence_count += 1
