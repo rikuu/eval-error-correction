@@ -37,7 +37,7 @@ analyze() {
   END=$2
 
   cd $OUTPUT/$STEP/$END
-  $ANALYZE corrected.fasta "$1" "$2" stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE corrected.fasta "$1" "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 }
 
 # Run
