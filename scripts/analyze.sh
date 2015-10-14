@@ -18,7 +18,7 @@ if [[ "$#" -lt 3 ]]; then
   exit 1
 fi
 
-if [[ "$1" = '-p']]; then
+if [ "$1" = '-p']; then
   shift
 else
   echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"

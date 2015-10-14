@@ -8,11 +8,6 @@
 # 2. Reference genome
 #
 
-#
-# TODO:
-# - Create k iteration loops
-#
-
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/configuration.sh
 
@@ -41,40 +36,40 @@ analyze() {
 }
 
 # Run
-run(0, 19)
+run 0 19
 
-run(3, 31)
-run(3, 46)
-run(3, 61)
+run 3 31
+run 3 46
+run 3 61
 
-run(7, 33)
-run(7, 47)
-run(7, 61)
+run 7 33
+run 7 47
+run 7 61
 
-run(14, 33)
-run(14, 47)
-run(14, 61)
+run 14 33
+run 14 47
+run 14 61
 
-run(21, 40)
-run(21, 61)
+run 21 40
+run 21 61
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 "CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
 
-analyze(0, 19)
+analyze 0 19
 
-analyze(3, 31)
-analyze(3, 46)
-analyze(3, 61)
+analyze 3 31
+analyze 3 46
+analyze 3 61
 
-analyze(7, 33)
-analyze(7, 47)
-analyze(7, 61)
+analyze 7 33
+analyze 7 47
+analyze 7 61
 
-analyze(14, 33)
-analyze(14, 47)
-analyze(14, 61)
+analyze 14 33
+analyze 14 47
+analyze 14 61
 
-analyze(21, 40)
-analyze(21, 61)
+analyze 21 40
+analyze 21 61
