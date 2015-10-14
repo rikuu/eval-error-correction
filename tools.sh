@@ -49,17 +49,17 @@ analyze() {
 }
 
 # Run
-run("lorma", "ecoli", $ECOLI_LR)
-run("pbcr-self", "ecoli", $ECOLI_LR)
-run("lordec", "ecoli", $ECOLI_LR, $ECOLI_SR)
-run("proovread", "ecoli", $ECOLI_LR, $ECOLI_SR)
-run("pbcr-illumina", "ecoli", $ECOLI_LR, $ECOLI_SR)
+run("lorma" "ecoli" $ECOLI_LR)
+run("pbcr-self" "ecoli" $ECOLI_LR)
+run("lordec" "ecoli" $ECOLI_LR $ECOLI_SR)
+run("proovread" "ecoli" $ECOLI_LR $ECOLI_SR)
+run("pbcr-illumina" "ecoli" $ECOLI_LR $ECOLI_SR)
 
-run("lorma", "yeast", $YEAST_LR)
-run("pbcr-self", "yeast", $YEAST_LR)
-run("lordec", "yeast", $YEAST_LR, $YEAST_SR)
-run("proovread", "yeast", $YEAST_LR, $YEAST_SR)
-run("pbcr-illumina", "yeast", $YEAST_LR, $YEAST_SR)
+run("lorma" "yeast" $YEAST_LR)
+run("pbcr-self" "yeast" $YEAST_LR)
+run("lordec" "yeast" $YEAST_LR $YEAST_SR)
+run("proovread" "yeast" $YEAST_LR $YEAST_SR)
+run("pbcr-illumina" "yeast" $YEAST_LR $YEAST_SR)
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
@@ -67,16 +67,16 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 
 echo -e "ecoli" | tee -a $OUTPUT/analysis.log
 
-analyze("lorma", "ecoli", $ECOLI_LR, $ECOLI_REF)
-analyze("pbcr-self", "ecoli", $ECOLI_LR, $ECOLI_REF)
-analyze("lordec", "ecoli", $ECOLI_LR, $ECOLI_REF)
-analyze("proovread", "ecoli", $ECOLI_LR, $ECOLI_REF)
-analyze("pbcr-illumina", "ecoli", $ECOLI_LR, $ECOLI_REF)
+analyze("lorma" "ecoli" $ECOLI_LR $ECOLI_REF)
+analyze("pbcr-self" "ecoli" $ECOLI_LR $ECOLI_REF)
+analyze("lordec" "ecoli" $ECOLI_LR $ECOLI_REF)
+analyze("proovread" "ecoli" $ECOLI_LR $ECOLI_REF)
+analyze("pbcr-illumina" "ecoli" $ECOLI_LR $ECOLI_REF)
 
 echo -e "yeast" | tee -a $OUTPUT/analysis.log
 
-analyze("lorma", "yeast", $YEAST_LR, $YEAST_REF)
-analyze("pbcr-self", "yeast", $YEAST_LR, $YEAST_REF)
-analyze("lordec", "yeast", $YEAST_LR, $YEAST_REF)
-analyze("proovread", "yeast", $YEAST_LR, $YEAST_REF)
-analyze("pbcr-illumina", "yeast", $YEAST_LR, $YEAST_REF)
+analyze("lorma" "yeast" $YEAST_LR $YEAST_REF)
+analyze("pbcr-self" "yeast" $YEAST_LR $YEAST_REF)
+analyze("lordec" "yeast" $YEAST_LR $YEAST_REF)
+analyze("proovread" "yeast" $YEAST_LR $YEAST_REF)
+analyze("pbcr-illumina" "yeast" $YEAST_LR $YEAST_REF)
