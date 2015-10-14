@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Runs error correction tools
+# Runs error correction tools and logs the disk, memory and swap statistics and
+# the cpu time and elapsed time
 #
 
 if [[ "$#" -lt 2 ]]; then

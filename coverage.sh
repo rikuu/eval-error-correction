@@ -41,11 +41,11 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 echo -e "LoRDEC+LoRMA" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/lorma/$i
-  $ANALYZE corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done
 
 echo -e "PBcR" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/pbcr/$i
-  $ANALYZE corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done

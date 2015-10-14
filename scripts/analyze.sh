@@ -7,22 +7,23 @@
 # 2. The generated log files from the scripts
 #
 
-#
-# TODO:
-# - optionally output data header
-#
-
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 SCRIPTS=$DIR
 
 source $DIR/../configuration.sh
 
 if [[ "$#" -lt 3 ]]; then
-  echo -e "$0 <out.fasta> <in.fasta> <reference> [stats.log[s] disk.log[s] time.log[s]]"
+  echo -e "$0 [-p] <out.fasta> <in.fasta> <reference> [stats.log[s] disk.log[s] time.log[s]]"
+  echo -e " -p skips printing the data header"
   exit 1
 fi
 
-#echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
+if [[ "$1" = '-p']]; then
+  shift
+else
+  echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
+fi
+
 REFSIZE=$(du "$2" | cut -f1)
 
 $BLASR "$1" "$3" -sam -nproc 12 -noSplitSubreads -clipping soft -out alignment.sam -unaligned alignment.unaligned -bestn 1 &> blasr.log

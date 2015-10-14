@@ -45,7 +45,7 @@ analyze() {
   REFERENCE=$4
 
   cd $OUTPUT/$TOOL/$DATASET
-  $ANALYZE corrected.fasta $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 }
 
 # Run

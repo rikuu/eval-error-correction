@@ -31,5 +31,5 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 "CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
 for i in $VALUES; do
   cd $OUTPUT/$i
-  $ANALYZE corrected.fasta "$1" "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta "$1" "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done
