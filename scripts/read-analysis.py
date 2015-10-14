@@ -62,8 +62,13 @@ def print_ratio_stat(stat, a, b):
   except ZeroDivisionError:
     print stat + ': ( ' + str(a) + '/' + str(b) + ' )'
 
-reference_base_count, reference_max_base, reference_n_count, reference_sequence_count = count_stats(referenceFile)
-reads_base_count, reads_max_base, reads_n_count, reads_sequence_count = count_stats(readsFile)
+referenceFasta = 'fasta' if '.fasta' in referenceFile or ('.fa' in referenceFile and not '.fastq' in referenceFile) else 'fastq'
+referenceGzip = '.gz' in referenceFile
+reference_base_count, reference_max_base, reference_n_count, reference_sequence_count = count_stats(referenceFile, referenceFasta, referenceGzip)
+
+readsFasta = 'fasta' if '.fasta' in readsFile or ('.fa' in readsFile and not '.fastq' in readsFile) else 'fastq'
+readsGzip = '.gz' in readsFile
+reads_base_count, reads_max_base, reads_n_count, reads_sequence_count = count_stats(readsFile, readsFasta, readsGzip)
 
 print_ratio_stat('Coverage', reads_base_count, reference_base_count)
 
