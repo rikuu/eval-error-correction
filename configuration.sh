@@ -40,11 +40,19 @@ BLASR=$TOOLS/blasr/blasr
 # GNU time
 TIME=/usr/bin/time
 
-# Define datasets
-ECOLI_REF=$DIR/reads/ecoli-ref.fastq
+# Define datasets:
+#
+# NOTES:
+# - Sam-analysis.py reads files in fasta format only, so the reference and
+# output from tools needs to be in fasta format.
+#
+# - All tested tools support either both fastq and fasta or just fastq format,
+# so for simplicity fastq format is assumed for reads
+
+ECOLI_REF=$DIR/reads/ecoli-ref.fasta
 ECOLI_LR=$DIR/reads/ecoli-lr.fastq
 ECOLI_SR=$DIR/reads/ecoli-sr.fastq
 
-YEAST_REF=$DIR/reads/yeast-ref.fastq
+YEAST_REF=$DIR/reads/yeast-ref.fasta
 YEAST_LR=$DIR/reads/yeast-lr.fastq
 YEAST_SR=$DIR/reads/yeast-sr.fastq

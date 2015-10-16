@@ -11,7 +11,8 @@
 import sys, gzip
 
 if len(sys.argv) < 3:
-  print 'Usage: ' + sys.argv[0] + ' <reads> <reference>'
+  print 'Usage: ' + sys.argv[0] + ' <reads> <reference> [-s]'
+  print '-s only prints size ratio'
   exit(1)
 
 readsFile = sys.argv[1]
@@ -70,11 +71,14 @@ readsFasta = 'fasta' if '.fasta' in readsFile or ('.fa' in readsFile and not '.f
 readsGzip = '.gz' in readsFile
 reads_base_count, reads_max_base, reads_n_count, reads_sequence_count = count_stats(readsFile, readsFasta, readsGzip)
 
-print_ratio_stat('Coverage', reads_base_count, reference_base_count)
+if len(sys.argv) == 4 and sys.argv[3] == '-s':
+  print reads_base_count / reference_base_count
+else:
+  print_ratio_stat('Coverage', reads_base_count, reference_base_count)
 
-print 'Reads: ' + str(reads_sequence_count)
-print 'Max. read length: ' + str(reads_max_base)
-print_ratio_stat('Avg. read length', reads_base_count, reads_sequence_count)
+  print 'Reads: ' + str(reads_sequence_count)
+  print 'Max. read length: ' + str(reads_max_base)
+  print_ratio_stat('Avg. read length', reads_base_count, reads_sequence_count)
 
-print_ratio_stat('Reads N rate', reads_n_count, reads_base_count)
-print_ratio_stat('Reference N rate', reference_n_count, reference_base_count)
+  print_ratio_stat('Reads N rate', reads_n_count, reads_base_count)
+  print_ratio_stat('Reference N rate', reference_n_count, reference_base_count)

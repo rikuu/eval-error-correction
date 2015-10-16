@@ -6,9 +6,6 @@
 # 1. a FASTQ file of the reads
 # 2. a FASTA file of the reference genome
 #
-# FASTQ is used instead of FASTA, since some tools require a FASTQ format
-# and it's easier to strip the quality data than to generate it.
-#
 
 import sys
 from random import randint
@@ -55,18 +52,6 @@ def sample(coverage, readsets, avg_set_coverage):
         with open(read, 'r') as r:
           f.write(r.read())
         reads.append(read)
-
-  # creates a copy of the generated subset with fasta format
-  with open('subset_'+str(coverage)+'x.fasta', 'w') as f:
-    for read in reads:
-      with open(read, 'r') as r:
-        i = 0
-        for line in r:
-          if i == 0:
-            f.write(line.replace('@', '>'))
-          elif i == 1:
-            f.write(line)
-          i = (i + 1) % 4
 
 # Counts the number of bases in a sequence file
 def count_bases(file, format='fasta'):
