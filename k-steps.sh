@@ -3,10 +3,6 @@
 # Runs experiments for comparing results for different sets of values for k
 # in the iteration steps of LoRDEC+LoRMA
 #
-# Input:
-# 1. Long reads
-# 2. Reference genome
-#
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/configuration.sh
@@ -17,6 +13,9 @@ ANALYZE=$SCRIPTS/analyze.sh
 
 OUTPUT=$OUTPUT_DIR/k-steps
 
+LONGREADS=$ECOLI_LR
+REFERENCE=$ECOLI_REF
+
 # Helper
 run() {
   STEP=$1
@@ -24,7 +23,7 @@ run() {
 
   mkdir -p $OUTPUT/$STEP/$END
   cd $OUTPUT/$STEP/$END
-  $MASTER lorma -start 19 -end $END -step $STEP "$1"
+  $MASTER lorma -start 19 -end $END -step $STEP "$LONGREADS"
 }
 
 analyze() {
@@ -32,7 +31,7 @@ analyze() {
   END=$2
 
   cd $OUTPUT/$STEP/$END
-  $ANALYZE -p corrected.fasta "$1" "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta "$LONGREADS" "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 }
 
 # Run

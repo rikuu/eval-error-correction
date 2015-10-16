@@ -6,6 +6,8 @@
 #
 # TODO:
 # - Move duplication to simple loops
+# - Generate fragment file for pbcr-illumina
+# - Analyze trimmed sequences
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
@@ -16,15 +18,6 @@ MASTER=$SCRIPTS/master.sh
 ANALYZE=$SCRIPTS/analyze.sh
 
 OUTPUT=$OUTPUT_DIR/tools
-
-# Define datasets
-ECOLI_REF=$DIR/reads/ecoli-ref.fastq
-ECOLI_LR=$DIR/reads/ecoli-lr.fastq
-ECOLI_SR=$DIR/reads/ecoli-sr.fastq
-
-YEAST_REF=$DIR/reads/yeast-ref.fastq
-YEAST_LR=$DIR/reads/yeast-lr.fastq
-YEAST_SR=$DIR/reads/yeast-sr.fastq
 
 # Helper functions
 run() {

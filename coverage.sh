@@ -3,10 +3,6 @@
 # Runs experiments for comparing results for different coverages
 # using LoRDEC+LoRMA and PBcR.
 #
-# Input:
-# 1. a FASTQ file of the reads
-# 2. Reference genome
-#
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/configuration.sh
@@ -17,10 +13,13 @@ ANALYZE=$SCRIPTS/analyze.sh
 
 OUTPUT=$OUTPUT_DIR/coverage
 
+LONGREADS=$ECOLI_LR
+REFERENCE=$ECOLI_REF
+
 # Generate random subsets
 mkdir -p $OUTPUT
 cd $OUTPUT
-python $SCRIPTS/sample-subset.py "$1"
+python $SCRIPTS/sample-subset.py "$LONGREADS"
 rm tmp.*.fastq
 
 # Run
@@ -41,11 +40,11 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 echo -e "LoRDEC+LoRMA" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/lorma/$i
-  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done
 
 echo -e "PBcR" | tee -a $OUTPUT/analysis.log
 for i in 25 50 75 100 150 175; do
   cd $OUTPUT/pbcr/$i
-  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$2" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done

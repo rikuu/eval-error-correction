@@ -39,3 +39,12 @@ BLASR=$TOOLS/blasr/blasr
 
 # GNU time
 TIME=/usr/bin/time
+
+# Define datasets
+ECOLI_REF=$DIR/reads/ecoli-ref.fastq
+ECOLI_LR=$DIR/reads/ecoli-lr.fastq
+ECOLI_SR=$DIR/reads/ecoli-sr.fastq
+
+YEAST_REF=$DIR/reads/yeast-ref.fastq
+YEAST_LR=$DIR/reads/yeast-lr.fastq
+YEAST_SR=$DIR/reads/yeast-sr.fastq
