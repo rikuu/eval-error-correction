@@ -29,7 +29,7 @@ rm tmp.*.fastq
 for i in $VALUES; do
   mkdir -p $OUTPUT/lorma/$i
   cd $OUTPUT/lorma/$i
-  $MASTER lorma $OUTPUT/subset_"$i"x.fasta
+  $MASTER lorma $OUTPUT/subset_"$i"x.fastq
 
   mkdir -p $OUTPUT/pbcr/$i
   cd $OUTPUT/pbcr/$i
@@ -43,11 +43,11 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 echo -e "LoRDEC+LoRMA" | tee -a $OUTPUT/analysis.log
 for i in $VALUES; do
   cd $OUTPUT/lorma/$i
-  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fastq "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done
 
 echo -e "PBcR" | tee -a $OUTPUT/analysis.log
 for i in $VALUES; do
   cd $OUTPUT/pbcr/$i
-  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fasta "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p corrected.fasta $OUTPUT/subset_"$i"x.fastq "$REFERENCE" stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 done
