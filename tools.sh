@@ -7,11 +7,6 @@
 # parts and run sequentially.
 #
 
-#
-# TODO:
-# - Move duplication to simple loops
-#
-
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
 source $DIR/configuration.sh
 
