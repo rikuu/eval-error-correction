@@ -58,19 +58,10 @@ for chrom in genome.keys():
     genomeLen += float(len(genome[chrom]))
 
 with open(fastafile) as f:
-# with gzip.open(fastafile) as f:
-    #readLen = 0.0
     for line in f:
         line = line.rstrip()
         if line[0:1] != ">":
             totalReadLength += len(line)
-            #readLen += len(line)
-        #else:
-            #expCoverage *= (1.0-float(readLen)/float(genomeLen))
-            #readLen = 0.0
-#expCoverage *= (1.0-float(readLen)/float(genomeLen))
-
-#print 'Expected coverage: ' + str(1.0-expCoverage) + '\n'
 
 errors=0
 alignedRegionRead=0
@@ -154,33 +145,3 @@ observedCoverage = str(float(coveredLen) / float(genomeLen))
 errorRate = str(float(errors)/float(alignedRegionGenome))
 
 print aligned + '\t' + errorRate + '\t' + identity + '\t' + expectedCoverage + '\t' + observedCoverage
-
-if uncoveredfile != None:
-    f = open(uncoveredfile, 'w')
-    for name in coverage.keys():
-        covArray = coverage[name]
-        gseq = genome[name]
-        start = -1
-        end = -1
-        for i in range(0, len(covArray)):
-            if gseq[i] != 'N' and gseq[i] != 'n' and covArray[i] == 0:
-                if start < 0:
-                    start = i
-                end = i
-            else:
-                if start >= 0:
-                    if start >= 5:
-                        start -= 5
-                    else:
-                        start = 0
-                    if end < len(gseq)-5:
-                        end += 5
-                    else:
-                        end = len(gseq)-1
-                    f.write('>' + name + '_' + str(len(gseq)) + '_' + str(start) + '_' + str(end) + '\n')
-                    f.write(gseq[start:end+1] + '\n')
-                start = -1
-        if start >= 0:
-            f.write('>' + name + '_' + str(len(gseq)) + '_' + str(start) + '_' + str(end) + '\n')
-            f.write(gseq[start:end+1] + '\n')
-    f.close()

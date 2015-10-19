@@ -1,12 +1,15 @@
 #!/bin/bash
 #
-# Runs experiments for comparing results for different error correction tools
+# Runs experiments for comparing results for different error correction tools.
+#
+# NOTE: PBcR with illumina data for some unknown reason takes an unreasonable
+# amount of disk space to correct the long reads, so they are split into 3
+# parts and run sequentially.
 #
 
 #
 # TODO:
 # - Move duplication to simple loops
-# - Split pbcr-illumina correction into parts (?)
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
@@ -47,18 +50,33 @@ cd $OUTPUT
 $FQ2CA -libraryname illumina -technology illumina -type sanger -reads "$ECOLI_SR" > ecoli.frg
 $FQ2CA -libraryname illumina -technology illumina -type sanger -reads "$YEAST_SR" > yeast.frg
 
+# Split the long reads into 3 parts
+cd $OUTPUT
+$SEQCHUNKER --chunk-number 3 -o ecoli-%03d.fq "$ECOLI_LR"
+$SEQCHUNKER --chunk-number 3 -o yeast-%03d.fq "$YEAST_LR"
+
 # Run
 run "lorma" "ecoli" $ECOLI_LR
 run "pbcr-self" "ecoli" $ECOLI_LR
 run "lordec" "ecoli" $ECOLI_LR $ECOLI_SR
 run "proovread" "ecoli" $ECOLI_LR $ECOLI_SR
-run "pbcr-illumina" "ecoli" $ECOLI_LR $OUTPUT/ecoli.frg
+
+run "pbcr-illumina" "ecoli-1" $OUTPUT/ecoli-001.fq $OUTPUT/ecoli.frg
+run "pbcr-illumina" "ecoli-2" $OUTPUT/ecoli-002.fq $OUTPUT/ecoli.frg
+run "pbcr-illumina" "ecoli-3" $OUTPUT/ecoli-003.fq $OUTPUT/ecoli.frg
+mkdir -p $OUTPUT/pbcr-illumina/ecoli
+cat $OUTPUT/pbcr-illumina/ecoli-*/corrected.fasta > $OUTPUT/pbcr-illumina/ecoli/corrected.fasta
 
 run "lorma" "yeast" $YEAST_LR
 run "pbcr-self" "yeast" $YEAST_LR
 run "lordec" "yeast" $YEAST_LR $YEAST_SR
 run "proovread" "yeast" $YEAST_LR $YEAST_SR
-run "pbcr-illumina" "yeast" $YEAST_LR $OUTPUT/yeast.frg
+
+run "pbcr-illumina" "yeast-1" $OUTPUT/yeast-001.fq $OUTPUT/yeast.frg
+run "pbcr-illumina" "yeast-2" $OUTPUT/yeast-002.fq $OUTPUT/yeast.frg
+run "pbcr-illumina" "yeast-3" $OUTPUT/yeast-003.fq $OUTPUT/yeast.frg
+mkdir -p $OUTPUT/pbcr-illumina/yeast
+cat $OUTPUT/pbcr-illumina/yeast-*/corrected.fasta > $OUTPUT/pbcr-illumina/yeast/corrected.fasta
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\

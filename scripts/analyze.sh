@@ -24,6 +24,7 @@ else
   echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
 fi
 
+# Use BWA-MEM here for larger genomes in the future
 $BLASR "$1" "$3" -sam -nproc 12 -noSplitSubreads -clipping soft -out alignment.sam -unaligned alignment.unaligned -bestn 1 &> blasr.log
 SAM=$(python $SCRIPTS/sam-analysis.py "$1" alignment.sam "$3")
 
