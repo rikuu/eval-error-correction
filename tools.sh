@@ -7,7 +7,6 @@
 # TODO:
 # - Move duplication to simple loops
 # - Generate fragment file for pbcr-illumina
-# - Analyze trimmed sequences
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
@@ -36,9 +35,10 @@ analyze() {
   DATASET=$2
   LONGREADS=$3
   REFERENCE=$4
+  CORRECTED=$5
 
   cd $OUTPUT/$TOOL/$DATASET
-  $ANALYZE -p corrected.fasta $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 }
 
 # Run
@@ -60,16 +60,20 @@ echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
 
 echo -e "ecoli" | tee -a $OUTPUT/analysis.log
 
-analyze "lorma" "ecoli" $ECOLI_LR $ECOLI_REF
-analyze "pbcr-self" "ecoli" $ECOLI_LR $ECOLI_REF
-analyze "lordec" "ecoli" $ECOLI_LR $ECOLI_REF
-analyze "proovread" "ecoli" $ECOLI_LR $ECOLI_REF
-analyze "pbcr-illumina" "ecoli" $ECOLI_LR $ECOLI_REF
+analyze "lorma" "ecoli" $ECOLI_LR $ECOLI_REF "corrected.fasta"
+analyze "pbcr-self" "ecoli" $ECOLI_LR $ECOLI_REF "corrected.fasta"
+analyze "lordec" "ecoli" $ECOLI_LR $ECOLI_REF "corrected.fasta"
+analyze "lordec" "ecoli" $ECOLI_LR $ECOLI_REF "corrected-trimmed.fasta"
+analyze "proovread" "ecoli" $ECOLI_LR $ECOLI_REF "corrected.fasta"
+analyze "proovread" "ecoli" $ECOLI_LR $ECOLI_REF "corrected-trimmed.fasta"
+analyze "pbcr-illumina" "ecoli" $ECOLI_LR $ECOLI_REF "corrected.fasta"
 
 echo -e "yeast" | tee -a $OUTPUT/analysis.log
 
-analyze "lorma" "yeast" $YEAST_LR $YEAST_REF
-analyze "pbcr-self" "yeast" $YEAST_LR $YEAST_REF
-analyze "lordec" "yeast" $YEAST_LR $YEAST_REF
-analyze "proovread" "yeast" $YEAST_LR $YEAST_REF
-analyze "pbcr-illumina" "yeast" $YEAST_LR $YEAST_REF
+analyze "lorma" "yeast" $YEAST_LR $YEAST_REF "corrected.fasta"
+analyze "pbcr-self" "yeast" $YEAST_LR $YEAST_REF "corrected.fasta"
+analyze "lordec" "yeast" $YEAST_LR $YEAST_REF "corrected.fasta"
+analyze "lordec" "yeast" $YEAST_LR $YEAST_REF "corrected-trimmed.fasta"
+analyze "proovread" "yeast" $YEAST_LR $YEAST_REF "corrected.fasta"
+analyze "proovread" "yeast" $YEAST_LR $YEAST_REF "corrected-trimmed.fasta"
+analyze "pbcr-illumina" "yeast" $YEAST_LR $YEAST_REF "corrected.fasta"
