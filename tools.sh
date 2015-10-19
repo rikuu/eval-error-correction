@@ -6,7 +6,7 @@
 #
 # TODO:
 # - Move duplication to simple loops
-# - Generate fragment file for pbcr-illumina
+# - Split pbcr-illumina correction into parts (?)
 #
 
 DIR=$(cd "$(dirname "${BASH_SOURCE[0]}" )" && pwd)
@@ -41,18 +41,24 @@ analyze() {
   $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
 }
 
+# Generate illumina fragment files for PBcR
+mkdir -p $OUTPUT
+cd $OUTPUT
+$FQ2CA -libraryname illumina -technology illumina -type sanger -reads "$ECOLI_SR" > ecoli.frg
+$FQ2CA -libraryname illumina -technology illumina -type sanger -reads "$YEAST_SR" > yeast.frg
+
 # Run
 run "lorma" "ecoli" $ECOLI_LR
 run "pbcr-self" "ecoli" $ECOLI_LR
 run "lordec" "ecoli" $ECOLI_LR $ECOLI_SR
 run "proovread" "ecoli" $ECOLI_LR $ECOLI_SR
-run "pbcr-illumina" "ecoli" $ECOLI_LR $ECOLI_SR
+run "pbcr-illumina" "ecoli" $ECOLI_LR $OUTPUT/ecoli.frg
 
 run "lorma" "yeast" $YEAST_LR
 run "pbcr-self" "yeast" $YEAST_LR
 run "lordec" "yeast" $YEAST_LR $YEAST_SR
 run "proovread" "yeast" $YEAST_LR $YEAST_SR
-run "pbcr-illumina" "yeast" $YEAST_LR $YEAST_SR
+run "pbcr-illumina" "yeast" $YEAST_LR $OUTPUT/yeast.frg
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\

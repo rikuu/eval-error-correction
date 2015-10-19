@@ -24,7 +24,9 @@ PROOVREAD=$PROOVREAD_DIR/proovread
 SEQCHUNKER=$PROOVREAD_DIR/SeqChunker
 
 # http://wgs-assembler.sourceforge.net/wiki/index.php/PBcR
-PBCR=$TOOLS/wgs-8.3rc2/Linux-amd64/bin/PBcR
+PBCR_DIR=$TOOLS/wgs-8.3rc2/Linux-amd64/bin
+PBCR=$PBCR_DIR/PBcR
+FQ2CA=$PBCR_DIR/fastqToCA
 
 # http://atgc.lirmm.fr/lordec/
 LORDEC_DIR=$TOOLS/LoRDEC-0.4.1-strict
