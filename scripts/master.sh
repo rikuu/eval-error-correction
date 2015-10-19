@@ -50,9 +50,9 @@ if [ "$1" = "proovread" ]; then
 fi
 
 if [ "$1" = "pbcr" ]; then
-  $TIME -v $PBCR -l k12 -s $SCRIPTS/pbcr.spec -fastq "$2" "$3" 2> ../stderr.log 1> ../stdout.log
+  $TIME -v $PBCR -l pbcr -s $SCRIPTS/pbcr.spec -fastq "$2" "$3" 2> ../stderr.log 1> ../stdout.log
 
-  mv k12.fasta ../corrected.fasta
+  mv pbcr.fasta ../corrected.fasta
 fi
 
 if [ "$1" = "lordec" ]; then
