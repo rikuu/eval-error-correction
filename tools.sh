@@ -36,7 +36,7 @@ analyze() {
   CORRECTED=$5
 
   cd $OUTPUT/$TOOL/$DATASET
-  $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log time.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
 }
 
 # Generate illumina fragment files for PBcR
