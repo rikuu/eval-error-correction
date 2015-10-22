@@ -25,7 +25,12 @@ run() {
 
   mkdir -p $OUTPUT/$TOOL/$DATASET
   cd $OUTPUT/$TOOL/$DATASET
-  $MASTER $TOOL $LONGREADS $SHORTREADS
+
+  if [ $TOOL = "proovread" ]; then
+    $TIME $MASTER $TOOL $LONGREADS $SHORTREADS 2> stderr.log 1> stdout.log
+  else
+    $MASTER $TOOL $LONGREADS $SHORTREADS
+  fi
 }
 
 analyze() {
