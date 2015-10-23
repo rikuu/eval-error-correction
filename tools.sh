@@ -45,8 +45,8 @@ analyze() {
     STDERR="correct-time.log"
     if [ $CORRECTED = "corrected-trimmed.log" ]; then
       STDERR="correct-time.log,trim-time.log"
-    done
-  done
+    fi
+  fi
 
   cd $OUTPUT/$TOOL/$DATASET
   $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log $STDERR | tee -a $OUTPUT/analysis.log
