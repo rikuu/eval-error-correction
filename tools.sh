@@ -40,8 +40,16 @@ analyze() {
   REFERENCE=$4
   CORRECTED=$5
 
+  STDERR="stderr.log"
+  if [ $TOOL = "lordec" ]; then
+    STDERR="correct-time.log"
+    if [ $CORRECTED = "corrected-trimmed.log" ]; then
+      STDERR="correct-time.log,trim-time.log"
+    done
+  done
+
   cd $OUTPUT/$TOOL/$DATASET
-  $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log stderr.log | tee -a $OUTPUT/analysis.log
+  $ANALYZE -p $CORRECTED $LONGREADS $REFERENCE stats.log disk.log $STDERR | tee -a $OUTPUT/analysis.log
 }
 
 # Generate illumina fragment files for PBcR
