@@ -14,39 +14,49 @@ if len(sys.argv) < 4:
   exit(1)
 
 # Find the maximum memory and swap usages from a log file
+# NOTE: CPU usage statistics are also collected and analyzed but not outputted
+# for no particular reason.
 def stats(stats):
   max_cpu = 0
   max_mem = 0
   max_swap = 0
 
-  with open(stats, 'r') as f:
-    for line in f:
-      data = line.split(' ')
-      if len(data) < 3:
-        continue
+  try:
+    with open(stats, 'r') as f:
+      for line in f:
+        data = line.split(' ')
+        if len(data) < 3:
+          continue
 
-      # Format CPU usage into percentages
-      cpu = float(data[-3]) * 100
+        # Format CPU usage into percentages
+        cpu = float(data[-3]) * 100
 
-      # Format memory and swap usage into GB
-      mem = int(data[-2]) / 1000. / 1000.
-      swap = int(data[-1]) / 1000. / 1000.
+        # Format memory and swap usage into GB
+        mem = int(data[-2]) / 1000. / 1000.
+        swap = int(data[-1]) / 1000. / 1000.
 
-      max_mem = max(max_mem, mem)
-      max_cpu = max(max_cpu, cpu)
-      max_swap = max(max_swap, swap)
+        max_mem = max(max_mem, mem)
+        max_cpu = max(max_cpu, cpu)
+        max_swap = max(max_swap, swap)
+  except IOError:
+    max_mem, max_swap = '-', '-'
 
   return max_mem, max_swap
 
 # Find the maximum disk usage from all log files
 def disk(disk_logs):
   max_disk = 0
-  for log in disk_logs.split(','):
-    with open(log, 'r') as f:
-      m = 0
-      for line in f:
-        m = max(float(line.split(' ')[-1]) / 1000, m)
-      max_disk += m
+
+  try:
+    for log in disk_logs.split(','):
+      with open(log, 'r') as f:
+        m = 0
+        for line in f:
+          m = max(float(line.split(' ')[-1]) / 1000, m)
+        max_disk += m
+  except IOError:
+    max_disk = '-'
+
   return max_disk
 
 # Divide seconds into either hours and minutes or minutes and seconds
@@ -75,14 +85,17 @@ def tailHeadCut(file, tail, head, cut):
 def time(times):
   elapsed = 0
   cpu = 0
-  for log in times.split(','):
-    with open(log, 'r'):
-      a = float(tailHeadCut(log, 21, 1, 25))
-      b = float(tailHeadCut(log, 22, 1, 23))
-      c = float(tailHeadCut(log, 20, 1, 31)[:-1])
+  try:
+    for log in times.split(','):
+      with open(log, 'r'):
+        a = float(tailHeadCut(log, 21, 1, 25))
+        b = float(tailHeadCut(log, 22, 1, 23))
+        c = float(tailHeadCut(log, 20, 1, 31)[:-1])
 
-      elapsed += int((a + b) / (c / 100.))
-      cpu += int(a + b)
+        elapsed += int((a + b) / (c / 100.))
+        cpu += int(a + b)
+  except IOError:
+    return '-', '-'
 
   return prettyPrintTime(elapsed), prettyPrintTime(cpu)
 
@@ -96,4 +109,4 @@ for log in sys.argv[1].split(','):
 max_disk = disk(sys.argv[2])
 elapsed, cpu = time(sys.argv[3])
 
-print elapsed+'\t'+cpu+'\t'+str(max_mem)+' GB\t'+str(max_disk)+' GB\t'+str(max_swap)+' GB'
+print elapsed+'\t'+cpu+'\t'+str(max_mem)+'\t'+str(max_disk)+'\t'+str(max_swap)+''

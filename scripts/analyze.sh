@@ -21,7 +21,7 @@ fi
 if [ "$1" = '-p' ]; then
   shift
 else
-  echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak\tDisk peak\tSwap peak"
+  echo -e "Size\t\tAligned\t\tError rate\tIdentity\tExpCov\tObsCov\t\tElapsed time\tCPU time\tMemory peak (GB)\tDisk peak (GB)\tSwap peak (GB)"
 fi
 
 # Use BWA-MEM here for larger genomes in the future
