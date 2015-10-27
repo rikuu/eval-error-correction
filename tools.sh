@@ -42,9 +42,9 @@ analyze() {
 
   STDERR="stderr.log"
   if [ $TOOL = "lordec" ]; then
-    STDERR="correct-time.log"
+    STDERR="correct-stderr.log"
     if [ $CORRECTED = "corrected-trimmed.log" ]; then
-      STDERR="correct-time.log,trim-time.log"
+      STDERR="correct-stedd.log,trim-stderr.log"
     fi
   fi
 
