@@ -44,8 +44,12 @@ analyze() {
   if [ $TOOL = "lordec" ]; then
     STDERR="correct-stderr.log"
     if [ $CORRECTED = "corrected-trimmed.log" ]; then
-      STDERR="correct-stedd.log,trim-stderr.log"
+      STDERR="correct-stderr.log,trim-stderr.log"
     fi
+  fi
+
+  if [ $TOOL = "pbcr-illumina" ]; then
+    STDERR="../$CORRECTED-1/stderr.log,../$CORRECTED-2/stderr.log,../$CORRECTED-3/stderr.log"
   fi
 
   cd $OUTPUT/$TOOL/$DATASET
