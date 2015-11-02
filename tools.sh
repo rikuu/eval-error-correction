@@ -26,6 +26,10 @@ run() {
   mkdir -p $OUTPUT/$TOOL/$DATASET
   cd $OUTPUT/$TOOL/$DATASET
 
+  if [ $TOOL = "pbcr-self" ] || [ $TOOL = "pbcr-illumina" ]; then
+    TOOL="pbcr"
+  fi
+
   if [ $TOOL = "proovread" ]; then
     $TIME $MASTER $TOOL $LONGREADS $SHORTREADS 2> stderr.log 1> stdout.log
   else
@@ -92,7 +96,7 @@ cat $OUTPUT/pbcr-illumina/yeast-*/corrected.fasta > $OUTPUT/pbcr-illumina/yeast/
 
 # Analyze
 echo -e "Size\tAligned\tError rate\tIdentity\tExpCov\tObsCov\tElapsed time\t"\
-"CPU time\tMemory peak\tDisk peak\tSwap peak" | tee $OUTPUT/analysis.log
+"CPU time\tMemory peak (GB)\tDisk peak (GB)\tSwap peak (GB)" | tee $OUTPUT/analysis.log
 
 echo -e "ecoli" | tee -a $OUTPUT/analysis.log
 
